@@ -19,11 +19,10 @@ func (m *SpringSampleApp) Build(ctx context.Context, source *dagger.Directory) *
 		File("target/spring-petclinic-3.4.0-SNAPSHOT.jar")
 }
 
-func (m *SpringSampleApp) Publish(ctx context.Context, source *dagger.Directory, version string, registryAddress string, registryUsername string, registryPassword *dagger.Secret, imageName string) (string, error) {
+func (m *SpringSampleApp) Publish(ctx context.Context, source *dagger.Directory) (string, error) {
 	return dag.Container(dagger.ContainerOpts{Platform: "linux/amd64"}).
 		From("eclipse-temurin:17-alpine").
 		WithLabel("org.opencontainers.image.title", "Java with Dagger").
-		WithLabel("org.opencontainers.image.version", version).
 		WithFile("/app/spring-petclinic-3.4.0-SNAPSHOT.jar", m.Build(ctx, source)).
 		WithEntrypoint([]string{"java", "-jar", "/app/spring-petclinic-3.4.0-SNAPSHOT.jar"}).
 		Publish(ctx, fmt.Sprintf("ttl.sh/app-%.0f", math.Floor(rand.Float64()*10000000)))
