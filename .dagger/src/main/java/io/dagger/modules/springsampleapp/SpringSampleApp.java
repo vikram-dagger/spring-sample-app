@@ -20,16 +20,11 @@ public class SpringSampleApp extends AbstractModule {
   public File build(@DefaultPath(".") Directory source)
       throws InterruptedException, ExecutionException, DaggerQueryException {
     return dag.container()
-        .from("eclipse-temurin:23")
+        .from("maven:3.9-eclipse-temurin-23")
         .withMountedCache("/root/.m2", (CacheVolume) dag.cacheVolume("maven-cache"))
-        .withExec(List.of("apt-get", "update"))
-        .withExec(List.of("apt-get", "install", "--yes", "curl"))
-        .withExec(List.of("curl", "https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz", "-o", "/root/maven.tar.gz"))
-        .withExec(List.of("tar", "-xzvf", "/root/maven.tar.gz", "-C", "/opt"))
-        .withEnvVariable("M2_HOME", "/opt/apache-maven-3.9.9")
         .withDirectory("/src", source.withoutDirectory(".dagger"))
         .withWorkdir("/src")
-        .withExec(List.of("/opt/apache-maven-3.9.9/bin/mvn", "package"))
+        .withExec(List.of("mvn", "package"))
         .file("target/spring-petclinic-3.4.0-SNAPSHOT.jar");
   }
 
