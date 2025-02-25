@@ -1,13 +1,8 @@
 {
   "name": "spring-sample-app",
-  "engineVersion": "v0.15.3",
-  "sdk": "go",
-  "dependencies": [
-    {
-      "name": "java",
-      "source": "github.com/jcsirot/daggerverse/java@c591e9e0b99def2fc8a67bb090fca5cd06cf6a1d",
-      "pin": "c591e9e0b99def2fc8a67bb090fca5cd06cf6a1d"
-    }
-  ],
+  "engineVersion": "v0.16.1",
+  "sdk": {
+    "source": "java"
+  },
   "source": ".dagger"
 }
